@@ -1,0 +1,217 @@
+-- Language Table
+CREATE TABLE Languages (
+    language_id INT PRIMARY KEY,
+    language_name VARCHAR(50)
+);
+
+-- Director Table
+CREATE TABLE Directors (
+    director_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+-- Producer Table
+CREATE TABLE Producers (
+    producer_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+-- Movies Table
+CREATE TABLE Movies (
+    movie_id INT PRIMARY KEY,
+    title VARCHAR(100),
+    release_year INT,
+    director_id INT,
+    producer_id INT,
+    language_id INT,
+    budget DECIMAL(15,2),
+    box_office_Collection DECIMAL(15,2),
+    FOREIGN KEY (director_id) REFERENCES Directors(director_id),
+    FOREIGN KEY (producer_id) REFERENCES Producers(producer_id),
+    FOREIGN KEY (language_id) REFERENCES Languages(language_id)
+);
+
+-- Actors Table
+CREATE TABLE Actors (
+    actor_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    birthdate DATE
+);
+
+-- Movie_Cast Table (role can be Hero, Heroine, Villain)
+CREATE TABLE Movie_Cast (
+    movie_id INT,
+    actor_id INT,
+    role VARCHAR(20),
+    PRIMARY KEY (movie_id, actor_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (actor_id) REFERENCES Actors(actor_id)
+);
+
+-- Ratings Table
+CREATE TABLE Ratings (
+    rating_id INT PRIMARY KEY,
+    movie_id INT,
+    rating_score DECIMAL(3,1),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+);
+INSERT INTO Languages VALUES 
+(1, 'Telugu'),
+(2, 'Hindi'),
+(3, 'Malayalam');
+
+
+INSERT INTO Directors VALUES
+(1, 'S. S. Rajamouli'),
+(2, 'Prashanth Neel'),
+(3, 'Parasuram'),
+(4, 'Sandeep Reddy Vanga'),
+(5, 'Sukumar'),
+(6, 'Nag Ashwin'),
+(7, 'Nikhil Nagesh Bhat'),   -- Kill  -- Animal
+(8, 'Haneef Adeni');         -- Marco
+
+INSERT INTO Producers VALUES
+(1, 'Shobu Yarlagadda'),
+(2, 'Vijay Kiragandur'),
+(3, 'Bunny Vas'),
+(4, 'Pranay Reddy Vanga'),
+(5, 'Naveen Yerneni'),
+(6, 'C. Aswani Dutt'),
+(7, 'Karan Johar'),          -- Kill
+(8, 'Bhushan Kumar'),        -- Animal
+(9, 'Shareef Muhammed');     -- Marco
+
+INSERT INTO Actors VALUES
+(101, 'Prabhas', '1979-10-23'),
+(102, 'Rana Daggubati', '1984-12-14'),
+(103, 'Vijay Deverakonda', '1989-05-09'),
+(104, 'Rashmika Mandanna', '1996-04-05'),
+(105, 'Yash', '1986-01-08'),
+(106, 'Allu Arjun', '1982-04-08'),
+(107, 'Ram Charan', '1985-03-27'),
+(108, 'N. T. Rama Rao Jr.', '1983-05-20'),
+(109, 'Deepika Padukone', '1986-01-05'),
+(110, 'Anushka Shetty', '1981-11-07'),
+(111, 'Shriya Saran', '1982-09-11'),
+(112, 'shruti hasaan', '1986-01-28'),
+(113, 'shalini pandey', '1993-09-23'),
+(114, 'Laksh Lalwani', '1996-07-28'),        -- For Kill
+(115, 'Tanya Maniktala', '1997-07-07'),    -- For Kill
+(116, 'Ranbir Kapoor','1982-09-18'),         -- For Animal  
+(117, 'Unnikrishnan Mukundan', '1987-10-22'),    -- For Marco
+(118, 'Yukti Thareja', '2000-12-21'), -- For Marco
+(119, 'Raghav Juyal', '1991-07-10'),
+(120, 'Vijay Singh Deol', '1969-09-21'),
+(121, 'Kabir Duhan Singh', '1986-09-08');
+
+INSERT INTO Movies VALUES
+(1, 'Baahubali: The Beginning', 2015, 1, 1, 1, 180000000.00, 650000000.00),
+(2, 'Salaar', 2023, 2, 2, 1, 250000000.00, 600000000.00),
+(3, 'Geetha Govindam', 2018, 3, 3, 1, 100000000.00, 130000000.00),
+(4, 'Arjun Reddy', 2017, 4, 4, 1, 50000000.00, 510000000.00),
+(5, 'RRR', 2022, 1, 1, 1, 550000000.00, 1200000000.00),
+(6, 'Pushpa: The Rise', 2021, 5, 5, 1, 180000000.00, 360000000.00),
+(7, 'Kalki 2898 AD', 2024, 6, 6, 1, 600000000.00, 1300000000.00),
+(8, 'Kill', 2024, 7, 7, 2, 20000000.00, 470000000.00),  -- Example values
+(9, 'Animal', 2023, 4, 8, 2, 120000000.00, 9000000000.00),
+(10, 'Marco', 2024, 8, 9, 3, 30000000.00, 100000000.00);
+
+-- Add Cast for Kill
+
+-- Baahubali
+INSERT INTO Movie_Cast VALUES
+(1, 101, 'Hero'),  -- Prabhas
+(1, 102, 'Villain'), -- Rana
+(1, 110, 'Heroine'); -- Anushka
+
+-- Salaar
+INSERT INTO Movie_Cast VALUES
+(2, 101, 'Hero'),
+(2, 112, 'Heroine'),
+(2, 105, 'Villain'); -- Yash (assumed as antagonist for demo)
+
+-- Geetha Govindam
+INSERT INTO Movie_Cast VALUES
+(3, 103, 'Hero'),  -- Vijay
+(3, 104, 'Heroine');
+
+-- Arjun Reddy
+INSERT INTO Movie_Cast VALUES
+(4, 103, 'Hero'),
+(4, 113, 'Heroine');
+
+-- RRR
+INSERT INTO Movie_Cast VALUES
+(5, 108, 'Hero'),  -- Ram Charan
+(5, 107, 'Hero');  -- Jr NTR
+
+-- Pushpa
+INSERT INTO Movie_Cast VALUES
+(6, 106, 'Hero'),
+(6, 104, 'Heroine');
+
+-- Kalki
+INSERT INTO Movie_Cast VALUES
+(7, 101, 'Hero'),
+(7, 109, 'Heroine'), 
+(7, 111, 'Villain');
+
+INSERT INTO Movie_Cast VALUES
+(8, 114, 'Hero'),     
+(8, 115, 'Heroine'),  
+(8, 119, 'Villain'); 
+
+-- Add Cast for Animal
+INSERT INTO Movie_Cast VALUES
+(9, 116, 'Hero'),
+(9, 104, 'Heroine'),
+(9, 120, 'Villain');
+
+INSERT INTO Movie_Cast VALUES
+(10, 117, 'Hero'), 
+(10, 118, 'Heroine'),  
+(10, 121, 'Villain'); 
+
+INSERT INTO Ratings VALUES
+(1001, 1, 8.1),
+(1002, 2, 8.5),
+(1003, 3, 7.8),
+(1004, 4, 8.2),
+(1005, 5, 9.0),
+(1006, 6, 8.3),
+(1007, 7, 8.9),
+(1008, 8, 8.5),   -- Kill
+(1009, 9, 8.6),   -- Animal
+(1010, 10, 8.2);  -- Marco
+
+SELECT 
+    m.movie_id,
+    m.title AS movie_name,
+    d.name AS director,
+    p.name AS producer,
+    l.language_name AS language,
+    r.rating_score AS rating,
+    m.budget,
+    m.release_year,
+    m.box_office_Collection,
+    
+    -- Hero
+    MAX(CASE WHEN mc.role = 'Hero' THEN a.name END) AS hero,
+    
+    -- Heroine
+    MAX(CASE WHEN mc.role = 'Heroine' THEN a.name END) AS heroine,
+    
+    -- Villain
+    MAX(CASE WHEN mc.role = 'Villain' THEN a.name END) AS villain
+
+FROM Movies m
+JOIN Directors d ON m.director_id = d.director_id
+JOIN Producers p ON m.producer_id = p.producer_id
+JOIN Languages l ON m.language_id = l.language_id
+JOIN Ratings r ON m.movie_id = r.movie_id
+LEFT JOIN Movie_Cast mc ON m.movie_id = mc.movie_id
+LEFT JOIN Actors a ON mc.actor_id = a.actor_id
+
+GROUP BY m.movie_id, m.title, d.name, p.name, l.language_name, r.rating_score, m.budget, m.box_office_Collection;
+
